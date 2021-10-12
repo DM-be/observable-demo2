@@ -7,12 +7,12 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { of, Subscription } from 'rxjs';
+import { fromEvent, Observable, of, Subscription } from 'rxjs';
 
 @Component({
   selector: 'demo',
   template: `
-    <h1>just a demo</h1>
+  <button #btn >Click me</button>
   `,
   styles: [
     `
@@ -23,22 +23,33 @@ import { of, Subscription } from 'rxjs';
   ],
 })
 export class DemoComponent implements OnInit, OnDestroy {
+  @ViewChild('btn') button: ElementRef;
+
   private subscription: Subscription;
   ngOnInit(): void {
-    const aSumObserver = {
-      sum: 0,
-      next(value: number) {
-        console.log(`adding ${value}`);
-        this.sum = this.sum + value;
+    const observer = {
+      next(event: string) {
+        console.log(event);
       },
       error() {
         // dont care
       },
       complete() {
-        console.log(`observable completed: the sum is ${this.sum}`);
+        console.log(`observable completed`);
       },
     };
-    this.subscription = of(1, 3, 4).subscribe(aSumObserver);
+    // this.subscription = fromEvent(this.button.nativeElement, 'click').subscribe((x) =>
+    //   console.log('clicked')
+    // );
+
+    const completedObservable = new Observable(function (obs) {
+      obs.next();
+    });
+    completedObservable.subscribe(observer);
+    const arrowFunctionObservable = new Observable((obs) => {
+      obs.next('now with an arrow function');
+    });
+    arrowFunctionObservable.subscribe(observer)
   }
 
   ngOnDestroy() {

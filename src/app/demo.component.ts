@@ -12,7 +12,7 @@ import { of, Subscription } from 'rxjs';
 @Component({
   selector: 'demo',
   template: `
-    <h1>{just a demo</h1>
+    <h1>just a demo</h1>
   `,
   styles: [
     `

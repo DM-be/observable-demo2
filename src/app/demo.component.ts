@@ -3,18 +3,16 @@ import {
   Component,
   ElementRef,
   Input,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { fromEvent } from 'rxjs';
-import { map, throttleTime } from 'rxjs/operators';
-
-// add mouseclick interface here
+import { of, Subscription } from 'rxjs';
 
 @Component({
   selector: 'demo',
   template: `
-    <button>Click me</button>
+    <h1>just a demo</h1>
   `,
   styles: [
     `
@@ -24,6 +22,26 @@ import { map, throttleTime } from 'rxjs/operators';
     `,
   ],
 })
-export class DemoComponent implements OnInit {
-  ngOnInit(): void {}
+export class DemoComponent implements OnInit, OnDestroy {
+  private subscription: Subscription;
+  ngOnInit(): void {
+    const aSumObserver = {
+      sum: 0,
+      next(value) {
+        console.log(`adding ${value}`);
+        this.sum = this.sum + value;
+      },
+      error() {
+        // dont care
+      },
+      complete() {
+        console.log(`observable completed: the sum is ${this.sum}`);
+      },
+    };
+    this.subscription = of(1, 3, 4).subscribe(aSumObserver);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }

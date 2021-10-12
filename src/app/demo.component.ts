@@ -28,28 +28,17 @@ export class DemoComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   ngOnInit(): void {
     const observer = {
-      next(event: string) {
+      next(event: any) {
         console.log(event);
       },
       error() {
-        // dont care
       },
       complete() {
         console.log(`observable completed`);
       },
     };
-    // this.subscription = fromEvent(this.button.nativeElement, 'click').subscribe((x) =>
-    //   console.log('clicked')
-    // );
 
-    const completedObservable = new Observable(function (obs) {
-      obs.next();
-    });
-    completedObservable.subscribe(observer);
-    const arrowFunctionObservable = new Observable((obs) => {
-      obs.next('now with an arrow function');
-    });
-    arrowFunctionObservable.subscribe(observer)
+
   }
 
   ngOnDestroy() {

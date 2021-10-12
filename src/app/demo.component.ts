@@ -27,7 +27,7 @@ export class DemoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const aSumObserver = {
       sum: 0,
-      next(value) {
+      next(value: number) {
         console.log(`adding ${value}`);
         this.sum = this.sum + value;
       },
